@@ -1,0 +1,98 @@
+:root {
+  --bg: #0d1013;
+  --bg-raised: #14181c;
+  --bg-input: #191e23;
+  --border: #262c32;
+  --text: #e8ecef;
+  --text-dim: #838f99;
+  --accent: #4fb8a8;
+  --accent-dim: #2f6b62;
+  --danger: #c96a5c;
+  --radius: 10px;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---------------------------------------------------------- *
+ *  Layout shell: phone-portrait / phone-landscape / desktop    *
+ * ---------------------------------------------------------- */
+
+.app-shell {
+  display: grid;
+  height: 100dvh;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+/* Phone, portrait: single column, chat list and chat view are separate
+   screens (view swaps via data-view attribute on the shell). */
+.app-shell[data-view="list"] .chat-pane,
+.app-shell[data-view="chat"] .list-pane {
+  display: none;
+}
+
+.list-pane {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.chat-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Phone, landscape: list + chat side by side, narrower list */
+@media (max-height: 480px) and (orientation: landscape) {
+  .app-shell {
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .app-shell[data-view="list"] .chat-pane,
+  .app-shell[data-view="chat"] .list-pane {
+    display: flex;
+  }
+}
+
+/* Desktop / wide viewport: fixed sidebar + chat, list always visible */
+@media (min-width: 860px) {
+  .app-shell {
+    grid-template-columns: 320px 1fr;
+  }
+  .app-shell[data-view="list"] .chat-pane,
+  .app-shell[data-view="chat"] .list-pane {
+    display: flex;
+  }
+}
